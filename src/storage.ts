@@ -14,6 +14,9 @@ export async function initStorage(logger) {
   const dsn = `mysql://${config.mysql.user}:${config.mysql.password}@${config.mysql.host}:${config.mysql.port}/`
   const conn = createConnectionPool(dsn);
 
+  // digital ocean fix
+  await conn.query(sql`SET SESSION sql_require_primary_key = 0;`);
+
   await conn.query(sql`CREATE DATABASE IF NOT EXISTS \`alerts\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`);
   const startTimes = new Map<SQLQuery, number>();
   let connectionsCount = 0;
