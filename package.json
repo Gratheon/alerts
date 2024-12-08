@@ -1,0 +1,45 @@
+{
+  "name": "alerts",
+  "version": "1.0.0",
+  "description": "Alert service",
+  "dependencies": {
+    "@apollo/federation": "0.38.1",
+    "@databases/mysql": "6.0.0",
+    "apollo-server-core": "3.4.0",
+    "apollo-server-fastify": "3.4.0",
+    "axios": "1.7.2",
+    "cross-fetch": "4.0.0",
+    "fastify": "3.29.5",
+    "fastify-cookie": "5.5.0",
+    "fastify-raw-body": "3.2.0",
+    "graphql": "15.8.0",
+    "sha1": "1.1.1",
+    "twilio": "5.3.6",
+    "uuid": "9.0.1"
+  },
+  "scripts": {
+    "build": "tsc -p ./src/config/tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ENV_ID=dev nodemon app/alerts.js",
+    "start": "ENV_ID=prod node app/alerts.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gratheon/alerts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gratheon/alerts/issues"
+  },
+  "homepage": "https://github.com/gratheon/alerts#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^2.0.20",
+    "ts-jest": "^29.2.5",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.2.2"
+  }
+}

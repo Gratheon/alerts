@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  alerts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "node /app/app/alerts.js"
+    ports:
+      - 4560:4560
+    environment:
+      - ENV_ID=prod
+    restart: always
+    network_mode: host

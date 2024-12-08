@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  alerts:
+    build:
+      dockerfile: Dockerfile
+    command:
+      ./node_modules/.bin/tsc-watch --project ./src/config/tsconfig.json --onSuccess "node /app/app/alerts.js"
+    environment:
+      - ENV_ID=dev
+    tty: true
+    ports:
+      - 4560:4560
+    volumes:
+      - .:/app/
+    restart: always

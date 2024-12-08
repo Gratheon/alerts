@@ -1,0 +1,13 @@
+scalar JSON
+scalar DateTime
+scalar URL
+
+type Query {
+	alerts: [Alert]
+}
+
+type Alert {
+	id: ID!
+	text: String!
+	date_added: DateTime
+}
