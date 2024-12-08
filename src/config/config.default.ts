@@ -1,5 +1,4 @@
 const config = {
-	sentryDsn: "",
 	schemaRegistryHost: `http://gql-schema-registry:3000`,
 	selfUrl: "alerts:4560",
 	mysql: {
@@ -16,9 +15,6 @@ const config = {
 	clarifai: {
 		translation_PAT: ''
 	},
-
-	login_ui_url: 'http://localhost:8080/account/authenticate/',
-	app_ui_url: 'http://localhost:8080/apiaries',
 };
 
 export default config;
