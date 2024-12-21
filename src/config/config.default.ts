@@ -1,4 +1,14 @@
 const config = {
+
+	// use paid messaging service by twilio
+	// https://console.twilio.com/us1/develop/sms/services
+	twilio:{
+		accountSid: '',
+		authToken: '',
+		messagingServiceSid: ''
+	},
+
+
 	schemaRegistryHost: `http://gql-schema-registry:3000`,
 	selfUrl: "alerts:4560",
 	mysql: {
