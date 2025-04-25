@@ -12,7 +12,7 @@
     "fastify": "3.29.5",
     "fastify-cookie": "5.5.0",
     "fastify-raw-body": "3.2.0",
-    "graphql": "15.8.0",
+    "graphql": "15.10.1",
     "sha1": "1.1.1",
     "twilio": "5.3.6",
     "uuid": "9.0.1"
