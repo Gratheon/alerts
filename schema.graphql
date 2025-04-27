@@ -4,10 +4,30 @@ scalar URL
 
 type Query {
 	alerts: [Alert]
+	alertChannelConfig: AlertChannelConfig
 }
 
 type Alert {
 	id: ID!
 	text: String!
 	date_added: DateTime
+}
+
+type AlertChannelConfig {
+	channelType: String!
+	phoneNumber: String
+	timeStart: String
+	timeEnd: String
+	enabled: Boolean
+}
+
+input AlertChannelConfigInput {
+	phoneNumber: String
+	timeStart: String
+	timeEnd: String
+	enabled: Boolean
+}
+
+type Mutation {
+	setAlertChannelConfig(config: AlertChannelConfigInput!): AlertChannelConfig
 }

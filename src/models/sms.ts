@@ -22,3 +22,18 @@
 //         .then(message => console.log(message.sid));
 // })
 //
+
+import { alertChannelModel } from './alertChannel';
+
+// Example function to check if SMS should be sent
+export async function shouldSendSms(user_id) {
+  const config = await alertChannelModel.getConfig(user_id);
+  if (!config || !config.enabled) return false;
+  const now = new Date();
+  const current = now.getHours() + now.getMinutes() / 60;
+  const [startH, startM] = (config.time_start || '00:00').split(':').map(Number);
+  const [endH, endM] = (config.time_end || '23:59').split(':').map(Number);
+  const start = startH + startM / 60;
+  const end = endH + endM / 60;
+  return current >= start && current < end;
+}
