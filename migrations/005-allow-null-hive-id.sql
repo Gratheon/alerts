@@ -1,0 +1,3 @@
+ALTER TABLE alert_rules
+  MODIFY COLUMN hive_id VARCHAR(50) NULL;
+

@@ -41,12 +41,12 @@ export const resolvers = {
 				enabled: row.enabled
 			}));
 		},
-		alertRules: async (_, { hiveId }, ctx) => {
+		alertRules: async (_, { hiveId, metricType }, ctx) => {
 			if (!ctx.uid) {
 				logger.warn("Authentication required for alertRules resolver")
 				return err(error_code.AUTHENTICATION_REQUIRED);
 			}
-			const rules = await alertRuleModel.getAll(ctx.uid, hiveId);
+			const rules = await alertRuleModel.getAll(ctx.uid, hiveId, metricType);
 			return rules.map(rule => ({
 				id: rule.id,
 				hiveId: rule.hive_id,

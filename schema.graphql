@@ -5,7 +5,7 @@ scalar URL
 type Query {
 	alerts: [Alert]
 	alertChannels: [AlertChannel]
-	alertRules(hiveId: String): [AlertRule]
+	alertRules(hiveId: String, metricType: String): [AlertRule]
 }
 
 type Alert {
@@ -31,7 +31,7 @@ type AlertChannel {
 
 type AlertRule {
 	id: ID!
-	hiveId: String!
+	hiveId: String
 	metricType: String!
 	conditionType: String!
 	thresholdValue: Float!
@@ -52,7 +52,7 @@ input AlertChannelInput {
 }
 
 input AlertRuleInput {
-	hiveId: String!
+	hiveId: String
 	metricType: String!
 	conditionType: String!
 	thresholdValue: Float!

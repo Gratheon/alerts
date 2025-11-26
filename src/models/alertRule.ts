@@ -2,19 +2,20 @@ import { sql } from "@databases/mysql";
 import { storage } from "../storage";
 
 export const alertRuleModel = {
-  async getAll(user_id, hive_id = null) {
-    if (hive_id) {
-      return await storage().query(
-        sql`SELECT id, hive_id, metric_type, condition_type, threshold_value, duration_minutes, enabled, created_at, updated_at 
-            FROM alert_rules 
-            WHERE user_id=${user_id} AND hive_id=${hive_id}`
-      );
+  async getAll(user_id, hive_id = null, metric_type = null) {
+    let query = sql`SELECT id, hive_id, metric_type, condition_type, threshold_value, duration_minutes, enabled, created_at, updated_at 
+        FROM alert_rules 
+        WHERE user_id=${user_id}`;
+
+    if (hive_id !== null) {
+      query = sql`${query} AND hive_id=${hive_id}`;
     }
-    return await storage().query(
-      sql`SELECT id, hive_id, metric_type, condition_type, threshold_value, duration_minutes, enabled, created_at, updated_at 
-          FROM alert_rules 
-          WHERE user_id=${user_id}`
-    );
+
+    if (metric_type !== null) {
+      query = sql`${query} AND metric_type=${metric_type}`;
+    }
+
+    return await storage().query(query);
   },
 
   async create(user_id, { hive_id, metric_type, condition_type, threshold_value, duration_minutes, enabled }) {
