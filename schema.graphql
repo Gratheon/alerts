@@ -4,30 +4,66 @@ scalar URL
 
 type Query {
 	alerts: [Alert]
-	alertChannelConfig: AlertChannelConfig
+	alertChannels: [AlertChannel]
+	alertRules(hiveId: String): [AlertRule]
 }
 
 type Alert {
 	id: ID!
 	text: String!
 	date_added: DateTime
+	hiveId: String
+	metricType: String
+	metricValue: Float
+	delivered: Boolean
 }
 
-type AlertChannelConfig {
+type AlertChannel {
+	id: ID!
 	channelType: String!
 	phoneNumber: String
+	email: String
+	telegramUsername: String
 	timeStart: String
 	timeEnd: String
 	enabled: Boolean
 }
 
-input AlertChannelConfigInput {
+type AlertRule {
+	id: ID!
+	hiveId: String!
+	metricType: String!
+	conditionType: String!
+	thresholdValue: Float!
+	durationMinutes: Int!
+	enabled: Boolean!
+	createdAt: DateTime
+	updatedAt: DateTime
+}
+
+input AlertChannelInput {
+	channelType: String!
 	phoneNumber: String
+	email: String
+	telegramUsername: String
 	timeStart: String
 	timeEnd: String
+	enabled: Boolean
+}
+
+input AlertRuleInput {
+	hiveId: String!
+	metricType: String!
+	conditionType: String!
+	thresholdValue: Float!
+	durationMinutes: Int!
 	enabled: Boolean
 }
 
 type Mutation {
-	setAlertChannelConfig(config: AlertChannelConfigInput!): AlertChannelConfig
+	setAlertChannel(config: AlertChannelInput!): AlertChannel
+	deleteAlertChannel(channelType: String!): Boolean
+	createAlertRule(rule: AlertRuleInput!): AlertRule
+	updateAlertRule(id: ID!, rule: AlertRuleInput!): AlertRule
+	deleteAlertRule(id: ID!): Boolean
 }

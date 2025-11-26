@@ -27,7 +27,7 @@ import { alertChannelModel } from './alertChannel';
 
 // Example function to check if SMS should be sent
 export async function shouldSendSms(user_id) {
-  const config = await alertChannelModel.getConfig(user_id);
+  const config = await alertChannelModel.getConfig(user_id, 'SMS');
   if (!config || !config.enabled) return false;
   const now = new Date();
   const current = now.getHours() + now.getMinutes() / 60;
