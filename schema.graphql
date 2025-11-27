@@ -32,6 +32,7 @@ type AlertChannel {
 type AlertRule {
 	id: ID!
 	hiveId: String
+	apiaryId: String
 	metricType: String!
 	conditionType: String!
 	thresholdValue: Float!
@@ -53,6 +54,7 @@ input AlertChannelInput {
 
 input AlertRuleInput {
 	hiveId: String
+	apiaryId: String
 	metricType: String!
 	conditionType: String!
 	thresholdValue: Float!

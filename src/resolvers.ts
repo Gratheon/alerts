@@ -50,6 +50,7 @@ export const resolvers = {
 			return rules.map(rule => ({
 				id: rule.id,
 				hiveId: rule.hive_id,
+				apiaryId: rule.apiary_id,
 				metricType: rule.metric_type,
 				conditionType: rule.condition_type,
 				thresholdValue: rule.threshold_value,
@@ -113,6 +114,7 @@ export const resolvers = {
 
 			const created = await alertRuleModel.create(ctx.uid, {
 				hive_id: rule.hiveId,
+				apiary_id: rule.apiaryId,
 				metric_type: rule.metricType,
 				condition_type: rule.conditionType,
 				threshold_value: rule.thresholdValue,
@@ -123,6 +125,7 @@ export const resolvers = {
 			return {
 				id: created.id,
 				hiveId: created.hive_id,
+				apiaryId: created.apiary_id,
 				metricType: created.metric_type,
 				conditionType: created.condition_type,
 				thresholdValue: created.threshold_value,
@@ -140,6 +143,7 @@ export const resolvers = {
 
 			const updated = await alertRuleModel.update(ctx.uid, id, {
 				hive_id: rule.hiveId,
+				apiary_id: rule.apiaryId,
 				metric_type: rule.metricType,
 				condition_type: rule.conditionType,
 				threshold_value: rule.thresholdValue,
@@ -150,6 +154,7 @@ export const resolvers = {
 			return {
 				id: updated.id,
 				hiveId: updated.hive_id,
+				apiaryId: updated.apiary_id,
 				metricType: updated.metric_type,
 				conditionType: updated.condition_type,
 				thresholdValue: updated.threshold_value,
