@@ -4,9 +4,15 @@ import createConnectionPool, {sql} from "@databases/mysql";
 import jsonStringify from 'fast-safe-stringify'
 
 
-const conn = createConnectionPool(
-    `mysql://${config.mysql.user}:${config.mysql.password}@${config.mysql.host}:${config.mysql.port}/logs`
-);
+const conn = createConnectionPool({
+    connectionString: `mysql://${config.mysql.user}:${config.mysql.password}@${config.mysql.host}:${config.mysql.port}/logs`,
+    bigIntMode: 'number',
+    poolSize: 5,
+    maxUses: 7500,
+    idleTimeoutMilliseconds: 60000,
+    queueTimeoutMilliseconds: 60000,
+    acquireLockTimeoutMilliseconds: 60000,
+});
 
 function log(level: string, message: string, meta?: any) {
     let time = new Date().toISOString();

@@ -14,15 +14,27 @@ export async function initStorage(logger) {
   const dsn = `mysql://${config.mysql.user}:${config.mysql.password}@${config.mysql.host}:${config.mysql.port}/`
   const conn = createConnectionPool(dsn);
 
-  // digital ocean fix
-  await conn.query(sql`SET SESSION sql_require_primary_key = 0;`);
+  try {
+    // digital ocean fix
+    await conn.query(sql`SET SESSION sql_require_primary_key = 0;`);
 
-  await conn.query(sql`CREATE DATABASE IF NOT EXISTS \`alerts\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`);
+    await conn.query(sql`CREATE DATABASE IF NOT EXISTS \`alerts\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`);
+  } finally {
+    // Close the temporary connection pool
+    await conn.dispose();
+  }
+  
   const startTimes = new Map<SQLQuery, number>();
   let connectionsCount = 0;
 
   db = createConnectionPool({
     connectionString: `${dsn}${config.mysql.database}`,
+    bigIntMode: 'number',
+    poolSize: 10,
+    maxUses: 7500,
+    idleTimeoutMilliseconds: 60000,
+    queueTimeoutMilliseconds: 60000,
+    acquireLockTimeoutMilliseconds: 60000,
     onQueryError: (query, { text }, err) => {
       startTimes.delete(query);
       logger.error(
