@@ -14,7 +14,7 @@ const config = {
 	mysql: {
 		host: 'mysql',
 		port: '3306',
-		user: 'test',
+		user: 'root',
 		password: 'test',
 		database: 'alerts',
 	},
