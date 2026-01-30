@@ -20,7 +20,12 @@
   },
   "scripts": {
     "build": "tsc -p ./src/config/tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "./node_modules/.bin/jest --config ./test/unit/jest.config.js --detectOpenHandles --forceExit",
+    "test:integration": "./node_modules/.bin/jest --config ./test/integration/jest.coverage.json --detectOpenHandles --forceExit",
+    "test:docker": "docker compose -f docker-compose.test.yml up --build --abort-on-container-exit",
+    "test:docker:start": "docker compose -f docker-compose.test.yml up -d",
+    "test:docker:stop": "docker compose -f docker-compose.test.yml down -v",
     "dev": "ENV_ID=dev nodemon app/alerts.js",
     "start": "ENV_ID=prod node app/alerts.js"
   },

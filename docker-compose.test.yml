@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: alerts
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ptest"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    command: --default-authentication-plugin=mysql_native_password
+
+  alerts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ENV_ID=dev
+      - NODE_ENV=test
+      - CI=true
+    ports:
+      - "4560:4560"
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: sh -c "npm run build && node /app/app/alerts.js"
+
+volumes:
+  mysql-test-data:
