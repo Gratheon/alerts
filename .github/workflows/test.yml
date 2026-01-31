@@ -1,9 +1,21 @@
 name: test
 on:
   pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE*'
+      - 'docs/**'
+      - '*.md'
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE*'
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   test:

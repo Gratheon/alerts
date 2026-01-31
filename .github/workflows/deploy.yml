@@ -2,6 +2,12 @@ name: deploy
 on:
   push:
     branches: main
+    paths-ignore:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE*'
+      - 'docs/**'
+      - '*.md'
   workflow_dispatch:
 
 jobs:
