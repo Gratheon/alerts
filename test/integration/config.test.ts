@@ -13,7 +13,8 @@ describe('Delivery Module Configuration', () => {
     expect(config.aws).toBeDefined();
     expect(config.aws.region).toBeDefined();
     expect(config.aws.sesFromEmail).toBeDefined();
-    expect(config.aws.credentials).toBeDefined();
+    expect(config.aws.accessKeyId).toBeDefined();
+    expect(config.aws.secretAccessKey).toBeDefined();
 
     console.log('✅ AWS SES configuration structure is valid');
     console.log(`   Region: ${config.aws.region}`);

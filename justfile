@@ -18,9 +18,13 @@ test:
 test-unit:
 	npm run test:unit
 
-# Run all integration tests (includes delivery, API, e2e tests)
+# Run integration tests (API, e2e, cross-channel - no credentials required)
 test-integration:
 	npm run test:integration
+
+# Run manual channel tests (email, SMS, Telegram - requires credentials)
+test-manual:
+	npm run test:manual
 
 # Run tests in Docker
 test-docker:
