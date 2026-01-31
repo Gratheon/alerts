@@ -43,10 +43,16 @@ function log(level: string, message: string, meta?: any) {
 
 function storeInDB(level: string, message: string, meta?: any){
     if(!meta) meta = ""
-    conn.query(sql`
-        INSERT INTO logs (level, message, meta, timestamp)
-        VALUES (${level}, ${message}, ${JSON.stringify(meta)}, NOW())
-    `);
+    try {
+        conn.query(sql`
+            INSERT INTO logs (level, message, meta, timestamp)
+            VALUES (${level}, ${message}, ${JSON.stringify(meta)}, NOW())
+        `).catch(() => {
+            // Silently ignore database logging errors (e.g., during tests)
+        });
+    } catch (error) {
+        // Silently ignore database connection errors
+    }
 }
 
 export const logger = {

@@ -1,11 +1,13 @@
-import TelegramBot from 'node-telegram-bot-api';
+import * as TelegramBotLib from 'node-telegram-bot-api';
 import config from '../config/index';
 import { logger } from '../logger';
 
-// Initialize Telegram bot (singleton)
-let bot: TelegramBot | null = null;
+const TelegramBot = TelegramBotLib.default || TelegramBotLib;
 
-function getTelegramBot(): TelegramBot {
+// Initialize Telegram bot (singleton)
+let bot: any | null = null;
+
+function getTelegramBot(): any {
     if (!bot && config.telegram.botToken) {
         // polling: false because we're only sending messages, not receiving
         bot = new TelegramBot(config.telegram.botToken, { polling: false });
