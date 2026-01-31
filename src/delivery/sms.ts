@@ -1,4 +1,4 @@
-import twilio from 'twilio';
+const twilio = require('twilio');
 import config from '../config/index';
 import { logger } from '../logger';
 
