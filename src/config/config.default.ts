@@ -21,7 +21,20 @@ const config = {
 
 	// this must match graphql-router
 	JWT_KEY: '',
-	SENDGRID_API_KEY: '',
+	
+	// AWS SES for email delivery
+	aws: {
+		region: 'eu-west-1',
+		accessKeyId: '',
+		secretAccessKey: '',
+		sesFromEmail: 'pilot@gratheon.com'
+	},
+	
+	// Telegram Bot API
+	telegram: {
+		botToken: ''
+	},
+	
 	clarifai: {
 		translation_PAT: ''
 	},

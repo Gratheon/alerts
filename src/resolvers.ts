@@ -78,15 +78,16 @@ export const resolvers = {
 				return err("INVALID_TIME_RANGE");
 			}
 
-			const row = await alertChannelModel.setConfig(ctx.uid, {
-				channel_type: config.channelType,
-				phone_number: config.phoneNumber,
-				email: config.email,
-				telegram_username: config.telegramUsername,
-				time_start: config.timeStart,
-				time_end: config.timeEnd,
-				enabled: config.enabled,
-			});
+		const row = await alertChannelModel.setConfig(ctx.uid, {
+			channel_type: config.channelType,
+			phone_number: config.phoneNumber,
+			email: config.email,
+			telegram_username: config.telegramUsername,
+			telegram_chat_id: config.telegramChatId,
+			time_start: config.timeStart,
+			time_end: config.timeEnd,
+			enabled: config.enabled,
+		});
 			if (!row) return null;
 			return {
 				id: row.id,
