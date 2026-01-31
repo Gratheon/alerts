@@ -11,12 +11,14 @@
  * - Database migrations applied (including 007 and 008)
  * - Channel config set up for test user
  * - ENV_ID=dev for credentials
+ * 
+ * Run with: npm run build && ENV_ID=dev npx jest test/integration/alert-delivery-e2e.test.ts
  */
 
-const { alertEvaluator } = require('../../app/models/alertEvaluator');
-const { alertDeliveryLogModel } = require('../../app/models/alertDeliveryLog');
-const { alertChannelModel } = require('../../app/models/alertChannel');
-const { storage } = require('../../app/storage');
+import { alertEvaluator } from '../../src/models/alertEvaluator';
+import { alertDeliveryLogModel } from '../../src/models/alertDeliveryLog';
+import { alertChannelModel } from '../../src/models/alertChannel';
+import { storage } from '../../src/storage';
 
 describe('Alert Delivery End-to-End', () => {
   const TEST_USER_ID = 1;
