@@ -9,7 +9,7 @@ import {schema} from './schema';
 import {resolvers} from './resolvers';
 import {initStorage} from "./storage";
 import {registerSchema} from "./schema-registry";
-import {logger} from './logger'
+import {logger, fastifyLogger} from './logger'
 
 function fastifyAppClosePlugin(app) {
     return {
@@ -48,7 +48,7 @@ async function startApolloServer(app, typeDefs, resolvers) {
     await initStorage(logger);
 
     // @ts-ignore
-    const app = fastify({logger});
+    const app = fastify({logger: fastifyLogger});
 
     app.register(require('fastify-cookie'), {
         secret: "my-secret", // for cookies signature
