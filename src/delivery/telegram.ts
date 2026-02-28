@@ -1,21 +1,32 @@
-import * as TelegramBotLib from 'node-telegram-bot-api';
+import fetch from 'cross-fetch';
 import config from '../config/index';
 import { logger } from '../logger';
 
-const TelegramBot = TelegramBotLib.default || TelegramBotLib;
-
-// Initialize Telegram bot (singleton)
-let bot: any | null = null;
-
-function getTelegramBot(): any {
-    if (!bot && config.telegram.botToken) {
-        // polling: false because we're only sending messages, not receiving
-        bot = new TelegramBot(config.telegram.botToken, { polling: false });
-    }
-    if (!bot) {
+function getBotToken(): string {
+    if (!config.telegram.botToken) {
         throw new Error('Telegram bot not configured. Please add botToken to config.');
     }
-    return bot;
+    return config.telegram.botToken;
+}
+
+async function sendTelegramMessage(chatId: number | string, message: string) {
+    const token = getBotToken();
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+        }),
+    });
+
+    const payload = await response.json() as any;
+    if (!response.ok || !payload.ok) {
+        const reason = payload?.description || `Telegram API returned HTTP ${response.status}`;
+        throw new Error(reason);
+    }
+
+    return payload.result;
 }
 
 export interface TelegramDeliveryResult {
@@ -38,24 +49,19 @@ export async function sendAlertTelegram({
     message: string;
 }): Promise<TelegramDeliveryResult> {
     try {
-        const bot = getTelegramBot();
-        
         // Add @ prefix if not present
         const formattedUsername = username.startsWith('@') ? username : `@${username}`;
-        
-        // Send message by username
-        // Note: This requires the user to have started the bot first
-        const response = await bot.sendMessage(formattedUsername, message);
+        const response = await sendTelegramMessage(formattedUsername, message);
         
         logger.info('Alert sent successfully via Telegram', { 
-            messageId: response.message_id,
+            messageId: response.message_id as number,
             username: formattedUsername,
-            chatId: response.chat.id
+            chatId: response.chat?.id
         });
         
         return {
             success: true,
-            messageId: response.message_id
+            messageId: response.message_id as number
         };
     } catch (error: any) {
         logger.error('Failed to send alert via Telegram', { 
@@ -86,18 +92,16 @@ export async function sendAlertTelegramByChatId({
     message: string;
 }): Promise<TelegramDeliveryResult> {
     try {
-        const bot = getTelegramBot();
-        
-        const response = await bot.sendMessage(chatId, message);
+        const response = await sendTelegramMessage(chatId, message);
         
         logger.info('Alert sent successfully via Telegram', { 
-            messageId: response.message_id,
+            messageId: response.message_id as number,
             chatId
         });
         
         return {
             success: true,
-            messageId: response.message_id
+            messageId: response.message_id as number
         };
     } catch (error: any) {
         logger.error('Failed to send alert via Telegram', { 

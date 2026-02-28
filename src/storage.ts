@@ -90,7 +90,9 @@ async function migrate(logger) {
     const files = await fs.promises.readdir("./migrations");
 
     // Filter the array to only include .sql files
-    const sqlFiles = files.filter((file) => file.endsWith(".sql"));
+    const sqlFiles = files
+      .filter((file) => file.endsWith(".sql"))
+      .sort((a, b) => a.localeCompare(b));
 
     // Read each .sql file and execute the SQL statements
     for (const file of sqlFiles) {
@@ -106,9 +108,10 @@ async function migrate(logger) {
         .update(sqlStatement)
         .digest("hex");
 
-      // Check if the SQL has already been executed by checking the hashes in the dedicated table
+      // Check if the SQL has already been executed.
+      // Prefer filename matching so edited migration files are not re-applied.
       const rows = await db.query(
-        sql`SELECT * FROM _db_migrations WHERE hash = ${hash}`
+        sql`SELECT * FROM _db_migrations WHERE filename = ${file} OR hash = ${hash} LIMIT 1`
       );
 
       // If the hash is not in the table, execute the SQL and store the hash in the table

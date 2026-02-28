@@ -1,8 +1,11 @@
-import {ApolloServer} from "apollo-server-fastify";
-import {ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground} from "apollo-server-core";
+import {ApolloServer} from "@apollo/server";
+import {ApolloServerPluginDrainHttpServer} from "@apollo/server/plugin/drainHttpServer";
+import {ApolloServerPluginLandingPageLocalDefault} from "@apollo/server/plugin/landingPage/default";
+import fastifyApollo, {fastifyApolloDrainPlugin} from "@as-integrations/fastify";
 import fastify from "fastify";
+import cookie from "@fastify/cookie";
 import {buildSubgraphSchema} from '@apollo/federation';
-import gql from "graphql-tag";
+import {parse} from "graphql";
 
 import config from './config/index';
 import {schema} from './schema';
@@ -25,32 +28,36 @@ function fastifyAppClosePlugin(app) {
 
 async function startApolloServer(app, typeDefs, resolvers) {
     const server = new ApolloServer({
-        schema: buildSubgraphSchema({typeDefs: gql(typeDefs), resolvers}),
+        schema: buildSubgraphSchema({typeDefs: parse(typeDefs), resolvers}),
         plugins: [
             fastifyAppClosePlugin(app),
-            ApolloServerPluginLandingPageGraphQLPlayground(),
-            ApolloServerPluginDrainHttpServer({httpServer: app.server})
+            fastifyApolloDrainPlugin(app),
+            ApolloServerPluginLandingPageLocalDefault({embed: true}),
+            ApolloServerPluginDrainHttpServer({httpServer: app.server}),
         ],
-        context: (req) => {
-            return {
-                uid: req.request.raw.headers['internal-userid']
-            };
-        },
     });
 
     await server.start();
-    app.register(server.createHandler());
+    app.register(
+        fastifyApollo(server),
+        {
+            context: async (request: any) => ({
+                uid: request.headers['internal-userid'],
+            }),
+            prefix: '/graphql',
+        }
+    );
 
-    return server.graphqlPath;
+    return '/graphql';
 }
 
 (async function main() {
     await initStorage(logger);
 
-    // @ts-ignore
-    const app = fastify({logger: fastifyLogger});
+    // Fastify v5 expects logger instances under `loggerInstance`.
+    const app = fastify({loggerInstance: fastifyLogger as any});
 
-    app.register(require('fastify-cookie'), {
+    await app.register(cookie, {
         secret: "my-secret", // for cookies signature
         parseOptions: {}     // options for parsing cookies
     })
@@ -186,7 +193,7 @@ async function startApolloServer(app, typeDefs, resolvers) {
         logger.info('starting alerts apollo server');
         const path = await startApolloServer(app, schema, resolvers);
 
-        await app.listen(4560, '0.0.0.0');
+        await app.listen({port: 4560, host: '0.0.0.0'});
         logger.info(`🔔 alerts service is ready at http://localhost:4560${path}`);
     } catch (e) {
         console.error(e);
