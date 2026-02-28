@@ -347,7 +347,8 @@ just start              # Build and start in Docker
 just run                # Run locally in dev mode
 just test               # Run all tests
 just test-unit          # Run unit tests only
-just test-integration   # Run integration tests
+just test-integration   # Run full integration tests (includes local e2e)
+just test-integration-ci # Run CI-safe integration tests
 just test-manual        # Run manual channel tests (requires real credentials)
 just test-docker        # Run tests in Docker
 ```
@@ -360,7 +361,8 @@ npm run dev             # Development mode with hot reload
 npm start               # Production mode
 npm test                # All tests
 npm run test:unit       # Unit tests
-npm run test:integration # Integration tests
+npm run test:integration # Full integration tests (includes local e2e)
+npm run test:integration:ci # CI-safe integration tests
 npm run test:manual     # Manual tests (email, SMS, Telegram)
 ```
 

@@ -54,7 +54,8 @@ jobs:
       - name: Run integration tests
         env:
           CI: true
-        run: npm run test:integration
+          TEST_API_HOST: localhost
+        run: npm run test:integration:ci
 
       - name: Show service logs on failure
         if: failure()

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains automated integration tests that can run in CI/CD environments without requiring external service credentials.
+This directory contains integration tests for API, cross-channel behavior, and end-to-end delivery.
 
 **For manual channel tests** (email, SMS, Telegram) that require credentials, see `test/manual-tests/README.md`.
 
@@ -16,7 +16,7 @@ The integration tests in this directory cover:
 - ✅ GraphQL API endpoints
 - ✅ Database queries and mutations
 
-### End-to-End Alert Delivery
+### End-to-End Alert Delivery (Local-Only)
 - ✅ Full alert creation and delivery workflow
 - ✅ Multi-channel coordination
 - ✅ Delivery status tracking
@@ -32,7 +32,7 @@ The integration tests in this directory cover:
 
 ## Running the Tests
 
-### Run All Integration Tests
+### Run Full Integration Tests (Local)
 
 ```bash
 npm run test:integration
@@ -44,7 +44,21 @@ Or with justfile:
 just test-integration
 ```
 
-These tests can run in CI/CD environments and do not require external service credentials.
+This includes `alert-delivery-e2e.test.ts`, which is local-only and expects a local development config/database setup.
+
+### Run CI Integration Tests
+
+```bash
+npm run test:integration:ci
+```
+
+Or with justfile:
+
+```bash
+just test-integration-ci
+```
+
+CI integration excludes `alert-delivery-e2e.test.ts`.
 
 ---
 

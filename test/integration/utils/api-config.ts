@@ -1,4 +1,4 @@
-const API_HOST = process.env.CI ? 'alerts' : 'localhost';
+const API_HOST = process.env.TEST_API_HOST || 'localhost';
 const API_PORT = 4560;
 const BASE_URL = `http://${API_HOST}:${API_PORT}`;
 

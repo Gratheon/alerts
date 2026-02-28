@@ -18,9 +18,13 @@ test:
 test-unit:
 	npm run test:unit
 
-# Run integration tests (API, e2e, cross-channel - no credentials required)
+# Run full integration tests (includes local-only e2e flow)
 test-integration:
 	npm run test:integration
+
+# Run CI integration tests (excludes local-only e2e flow)
+test-integration-ci:
+	npm run test:integration:ci
 
 # Run manual channel tests (email, SMS, Telegram - requires credentials)
 test-manual:
