@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains integration tests for API, cross-channel behavior, and end-to-end delivery.
+This directory contains integration tests for API behavior and cross-channel reliability.
 
 **For manual channel tests** (email, SMS, Telegram) that require credentials, see `test/manual-tests/README.md`.
 
@@ -15,11 +15,6 @@ The integration tests in this directory cover:
 ### API Integration
 - ✅ GraphQL API endpoints
 - ✅ Database queries and mutations
-
-### End-to-End Alert Delivery (Local-Only)
-- ✅ Full alert creation and delivery workflow
-- ✅ Multi-channel coordination
-- ✅ Delivery status tracking
 
 ### Cross-Channel Tests
 - ✅ Verify failures in one channel don't affect others
@@ -44,7 +39,7 @@ Or with justfile:
 just test-integration
 ```
 
-This includes `alert-delivery-e2e.test.ts`, which is local-only and expects a local development config/database setup.
+This suite starts Docker test dependencies and runs integration tests against the local API.
 
 ### Run CI Integration Tests
 
@@ -58,13 +53,13 @@ Or with justfile:
 just test-integration-ci
 ```
 
-CI integration excludes `alert-delivery-e2e.test.ts`.
+CI integration uses the CI-safe test list.
 
 ---
 
 ## Manual Channel Tests
 
-For tests that require AWS SES, Twilio, and Telegram credentials, see:
+For tests that require AWS SES, Twilio, and Telegram credentials or local-only end-to-end delivery validation, see:
 - **Directory:** `test/manual-tests/`
 - **README:** `test/manual-tests/README.md`
 
