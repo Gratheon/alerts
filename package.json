@@ -24,7 +24,7 @@
     "build": "tsc -p ./src/config/tsconfig.json",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "./node_modules/.bin/jest --config ./test/unit/jest.config.js --detectOpenHandles --forceExit",
-    "test:integration": "npm run build && ENV_ID=dev ./node_modules/.bin/jest --config ./test/integration/jest.config.json --detectOpenHandles --forceExit",
+    "test:integration": "sh -c 'set -e; npm run test:docker:start; cleanup() { npm run test:docker:stop; }; trap cleanup EXIT; for i in $(seq 1 30); do if docker compose -f docker-compose.test.yml exec -T mysql mysqladmin ping -h localhost --silent; then break; fi; if [ \"$i\" -eq 30 ]; then echo \"MySQL did not become ready\"; exit 1; fi; sleep 2; done; for i in $(seq 1 30); do if curl -fsS http://localhost:4560/health >/dev/null; then break; fi; if [ \"$i\" -eq 30 ]; then echo \"alerts service did not become ready\"; exit 1; fi; sleep 2; done; npm run build; ENV_ID=dev ./node_modules/.bin/jest --config ./test/integration/jest.config.json --detectOpenHandles --forceExit'",
     "test:integration:ci": "npm run build && TEST_API_HOST=localhost ./node_modules/.bin/jest --config ./test/integration/jest.config.ci.json --detectOpenHandles --forceExit",
     "test:manual": "npm run build && ENV_ID=dev ./node_modules/.bin/jest --config ./test/manual-tests/jest.config.json --detectOpenHandles --forceExit",
     "test:docker": "docker compose -f docker-compose.test.yml up --build --abort-on-container-exit",

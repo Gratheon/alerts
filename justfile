@@ -18,15 +18,15 @@ test:
 test-unit:
 	npm run test:unit
 
-# Run full integration tests (includes local-only e2e flow)
+# Run integration tests (self-contained Docker stack)
 test-integration:
 	npm run test:integration
 
-# Run CI integration tests (excludes local-only e2e flow)
+# Run CI integration tests
 test-integration-ci:
 	npm run test:integration:ci
 
-# Run manual channel tests (email, SMS, Telegram - requires credentials)
+# Run manual tests (credentials/local-only flows)
 test-manual:
 	npm run test:manual
 

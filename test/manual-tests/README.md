@@ -9,6 +9,7 @@ These tests require actual service credentials (AWS SES, Twilio, Telegram) and a
 - `email.test.ts` - AWS SES email delivery (requires AWS credentials)
 - `sms.test.ts` - Twilio SMS delivery (requires Twilio credentials)  
 - `telegram.test.ts` - Telegram Bot delivery (requires Telegram bot token)
+- `alert-delivery-e2e.test.ts` - local-only end-to-end delivery workflow (depends on local DB/service setup)
 
 ## Running manual tests:
 

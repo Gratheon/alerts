@@ -3,6 +3,7 @@
   "testEnvironment": "node",
   "testMatch": [
     "<rootDir>/api.test.ts",
+    "<rootDir>/auth-validation.test.ts",
     "<rootDir>/config.test.ts",
     "<rootDir>/cross-channel.test.ts"
   ],
