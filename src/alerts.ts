@@ -10,7 +10,7 @@ import {parse} from "graphql";
 import config from './config/index';
 import {schema} from './schema';
 import {resolvers} from './resolvers';
-import {initStorage} from "./storage";
+import {checkStorageHealth, initStorage} from "./storage";
 import {registerSchema} from "./schema-registry";
 import {logger, fastifyLogger} from './logger'
 
@@ -68,8 +68,14 @@ async function startApolloServer(app, typeDefs, resolvers) {
         reply.status(500).send({error: "Something went wrong"});
     });
 
-    app.get('/health', (request, reply) => {
-        reply.send({hello: 'world'})
+    app.get('/health', async (request, reply) => {
+        try {
+            await checkStorageHealth();
+            reply.send({status: 'ok'});
+        } catch (error) {
+            logger.error(error);
+            reply.status(503).send({status: 'error', message: 'Database is unavailable'});
+        }
     })
 
     app.get('/', (request, reply) => {

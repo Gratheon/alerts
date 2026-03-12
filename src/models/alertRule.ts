@@ -1,5 +1,4 @@
-import { sql } from "@databases/mysql";
-import { storage } from "../storage";
+import { sql, storage } from "../storage";
 
 interface AlertRuleData {
   hive_id: string | null;
@@ -29,17 +28,18 @@ export const alertRuleModel = {
   },
 
   async create(user_id: number, { hive_id, apiary_id, metric_type, condition_type, threshold_value, duration_minutes, enabled }: AlertRuleData) {
-    const result = await storage().query(sql`
+    const rows = await storage().query(sql`
       INSERT INTO alert_rules (user_id, hive_id, apiary_id, metric_type, condition_type, threshold_value, duration_minutes, enabled)
       VALUES (${user_id}, ${hive_id}, ${apiary_id}, ${metric_type}, ${condition_type}, ${threshold_value}, ${duration_minutes}, ${enabled})
+      RETURNING id
     `);
 
-    const rows = await storage().query(
+    const savedRows = await storage().query(
       sql`SELECT id, hive_id, apiary_id, metric_type, condition_type, threshold_value, duration_minutes, enabled, created_at, updated_at 
           FROM alert_rules 
-          WHERE id=${result.insertId}`
+          WHERE id=${rows[0].id}`
     );
-    return rows[0];
+    return savedRows[0];
   },
 
   async update(user_id: number, rule_id: number, { hive_id, apiary_id, metric_type, condition_type, threshold_value, duration_minutes, enabled }: AlertRuleData) {
@@ -51,7 +51,8 @@ export const alertRuleModel = {
           condition_type=${condition_type}, 
           threshold_value=${threshold_value}, 
           duration_minutes=${duration_minutes}, 
-          enabled=${enabled}
+          enabled=${enabled},
+          updated_at=NOW()
       WHERE id=${rule_id} AND user_id=${user_id}
     `);
 
@@ -70,4 +71,3 @@ export const alertRuleModel = {
     return true;
   },
 };
-

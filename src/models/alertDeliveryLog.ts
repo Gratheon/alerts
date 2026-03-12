@@ -1,5 +1,4 @@
-import { sql } from "@databases/mysql";
-import { storage } from "../storage";
+import { sql, storage } from "../storage";
 
 export const alertDeliveryLogModel = {
   async logDeliveryAttempt(alert_id: number, user_id: number, channel_type: string, status: 'pending' | 'sent' | 'failed', errorMessage?: string, externalMessageId?: string) {
@@ -20,7 +19,8 @@ export const alertDeliveryLogModel = {
           delivery_time=${delivery_time}, 
           error_message=${errorMessage || null}, 
           external_message_id=${externalMessageId || null},
-          retry_count=retry_count+1
+          retry_count=retry_count+1,
+          updated_at=NOW()
       WHERE alert_id=${alert_id} AND channel_type=${channel_type}
     `);
   },

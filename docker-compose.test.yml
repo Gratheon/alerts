@@ -1,20 +1,20 @@
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:18
     environment:
-      MYSQL_ROOT_PASSWORD: test
-      MYSQL_DATABASE: alerts
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: postgres
     ports:
-      - "3307:3306"
+      - "5307:5432"
     volumes:
-      - mysql-test-data:/var/lib/mysql
+      - postgres-test-data:/var/lib/postgresql
       - ./test/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ptest"]
+      test: ["CMD-SHELL", "pg_isready -U test -d alerts"]
       interval: 5s
       timeout: 3s
       retries: 10
-    command: --default-authentication-plugin=mysql_native_password --sql-require-primary-key=0
 
   alerts:
     build:
@@ -24,15 +24,20 @@ services:
       - ENV_ID=dev
       - NODE_ENV=test
       - CI=true
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=test
+      - DB_PASSWORD=test
+      - DB_NAME=alerts
     ports:
-      - "4560:4560"
+      - "4561:4560"
     volumes:
       - .:/app/
       - /app/node_modules
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     command: sh -c "npm run build && node /app/app/alerts.js"
 
 volumes:
-  mysql-test-data:
+  postgres-test-data:

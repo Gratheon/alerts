@@ -1,5 +1,4 @@
-import { storage } from "../storage";
-import { sql } from "@databases/mysql";
+import { sql, storage } from "../storage";
 import { alertModel } from "./alerts";
 import { alertChannelModel } from "./alertChannel";
 import { alertDeliveryLogModel } from "./alertDeliveryLog";
@@ -229,4 +228,3 @@ export const alertEvaluator = {
     logger.info("Completed retry of failed deliveries");
   }
 };
-

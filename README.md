@@ -325,7 +325,7 @@ Alert rules enable automated notifications based on hive metrics.
 - [nvm](https://github.com/nvm-sh/nvm) - Node Version Manager
 - [just](https://github.com/casey/just) - Command runner
 - Docker & Docker Compose
-- MySQL 8.0+
+- PostgreSQL (local setup via `../postgres`)
 
 ### Quick Start
 
@@ -396,7 +396,7 @@ Set `ENV_ID` to load environment-specific config:
   selfUrl: string,              // This service URL for federation
 
   // Database
-  mysql: {
+  postgres: {
     host: string,
     port: string,
     user: string,
@@ -462,7 +462,7 @@ just test-manual
 flowchart LR
     web-app("<a href='https://github.com/Gratheon/web-app'>web-app</a>") --"fetch user alerts"--> graphql-router
     graphql-router --> alerts("<a href='https://github.com/Gratheon/alerts'>alerts</a>")
-    alerts --"read/write alerts"--> mysql[(MySQL)]
+    alerts --"read/write alerts"--> postgres[(PostgreSQL)]
     alerts -."check weather at apiary coordinates".-> weather
     alerts --"send SMS alerts"--> twilio[Twilio SMS]
     alerts --"send email alerts"--> ses[AWS SES]
@@ -475,7 +475,7 @@ flowchart LR
 sequenceDiagram
     participant Client
     participant Alerts
-    participant DB as MySQL
+    participant DB as PostgreSQL
     participant Email as AWS SES
     participant SMS as Twilio
     participant TG as Telegram
@@ -521,7 +521,7 @@ sequenceDiagram
 - `telegram.ts` - Telegram Bot API integration
 
 **Database** (`src/storage.ts`):
-- MySQL connection pooling
+- PostgreSQL connection pooling
 - Automated migrations with hash-based tracking
 - Migration files in `migrations/` directory
 

@@ -11,12 +11,12 @@ const config = {
 
 	schemaRegistryHost: `http://gql-schema-registry:3000`,
 	selfUrl: "alerts:4560",
-	mysql: {
-		host: 'mysql',
-		port: '3306',
-		user: 'root',
-		password: 'test',
-		database: 'alerts',
+	postgres: {
+		host: process.env.DB_HOST || 'postgres',
+		port: process.env.DB_PORT || '5432',
+		user: process.env.DB_USER || 'test',
+		password: process.env.DB_PASSWORD || 'test',
+		database: process.env.DB_NAME || 'alerts',
 	},
 
 	// this must match graphql-router

@@ -1,6 +1,7 @@
 const mockStorageQuery = jest.fn();
 
 jest.mock("../storage", () => ({
+  sql: jest.fn((strings, ...values) => ({ strings, values })),
   storage: jest.fn(() => ({
     query: mockStorageQuery,
   })),

@@ -1,5 +1,4 @@
-import { sql } from "@databases/mysql";
-import { storage } from "../storage";
+import { sql, storage } from "../storage";
 
 export const alertChannelModel = {
   async getAll(user_id) {
@@ -24,14 +23,14 @@ export const alertChannelModel = {
     await storage().query(sql`
       INSERT INTO alert_channel_config (user_id, channel_type, phone_number, email, telegram_username, telegram_chat_id, time_start, time_end, enabled)
       VALUES (${user_id}, ${channel_type}, ${phone_number}, ${email}, ${telegram_username}, ${telegram_chat_id}, ${time_start}, ${time_end}, ${enabled})
-      ON DUPLICATE KEY UPDATE
-        phone_number=VALUES(phone_number),
-        email=VALUES(email),
-        telegram_username=VALUES(telegram_username),
-        telegram_chat_id=VALUES(telegram_chat_id),
-        time_start=VALUES(time_start),
-        time_end=VALUES(time_end),
-        enabled=VALUES(enabled)
+      ON CONFLICT (user_id, channel_type) DO UPDATE SET
+        phone_number=EXCLUDED.phone_number,
+        email=EXCLUDED.email,
+        telegram_username=EXCLUDED.telegram_username,
+        telegram_chat_id=EXCLUDED.telegram_chat_id,
+        time_start=EXCLUDED.time_start,
+        time_end=EXCLUDED.time_end,
+        enabled=EXCLUDED.enabled
     `);
     return this.getConfig(user_id, channel_type);
   },

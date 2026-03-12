@@ -1,6 +1,5 @@
 ALTER TABLE alert_channel_config
-  ADD COLUMN email VARCHAR(255) NULL,
-  ADD COLUMN telegram_username VARCHAR(255) NULL;
+  ADD COLUMN IF NOT EXISTS email VARCHAR(255),
+  ADD COLUMN IF NOT EXISTS telegram_username VARCHAR(255);
 
-CREATE INDEX idx_user_channel ON alert_channel_config(user_id, channel_type);
-
+CREATE INDEX IF NOT EXISTS idx_user_channel ON alert_channel_config(user_id, channel_type);
