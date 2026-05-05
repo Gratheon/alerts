@@ -9,7 +9,7 @@
     "@aws-sdk/client-ses": "^3.980.0",
     "@databases/pg": "^5.5.0",
     "@fastify/cookie": "^11.0.2",
-    "@gratheon/log-lib": "^2.2.7",
+    "@gratheon/log-lib": "4.1.1",
     "axios": "1.13.6",
     "cross-fetch": "4.0.0",
     "fastify": "5.7.4",

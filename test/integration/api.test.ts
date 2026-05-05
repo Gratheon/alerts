@@ -7,8 +7,8 @@ describe('Alerts API Integration Tests', () => {
       expect(response.ok).toBe(true);
       
       const data = await response.json();
-      expect(data).toHaveProperty('hello');
-      expect(data.hello).toBe('world');
+      expect(data).toHaveProperty('status');
+      expect(data.status).toBe('ok');
     });
 
     it('should return 200 status code', async () => {

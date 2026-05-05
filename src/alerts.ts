@@ -6,6 +6,7 @@ import fastify from "fastify";
 import cookie from "@fastify/cookie";
 import {buildSubgraphSchema} from '@apollo/federation';
 import {parse} from "graphql";
+import {registerFastifyTracing} from "@gratheon/log-lib";
 
 import config from './config/index';
 import {schema} from './schema';
@@ -56,6 +57,7 @@ async function startApolloServer(app, typeDefs, resolvers) {
 
     // Fastify v5 expects logger instances under `loggerInstance`.
     const app = fastify({loggerInstance: fastifyLogger as any});
+    registerFastifyTracing(app);
 
     await app.register(cookie, {
         secret: "my-secret", // for cookies signature

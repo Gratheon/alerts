@@ -7,9 +7,15 @@ services:
       ./node_modules/.bin/tsc-watch --project ./src/config/tsconfig.json --onSuccess "node /app/app/alerts.js"
     environment:
       - ENV_ID=dev
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://host.docker.internal:4318}
+      - OTEL_SERVICE_NAME=alerts
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment.name=dev,service.namespace=gratheon
+      - HYPERDX_API_KEY=${HYPERDX_API_KEY:-local-gratheon-clickstack}
     tty: true
     ports:
       - 4560:4560
     volumes:
       - .:/app/
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
