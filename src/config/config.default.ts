@@ -17,6 +17,9 @@ const config = {
 		user: process.env.DB_USER || 'test',
 		password: process.env.DB_PASSWORD || 'test',
 		database: process.env.DB_NAME || 'alerts',
+		// optional pool limits, defaults live in src/storage.ts
+		poolSize: process.env.DB_POOL_SIZE,
+		idleTimeoutMilliseconds: process.env.DB_IDLE_TIMEOUT_MS,
 	},
 
 	// this must match graphql-router

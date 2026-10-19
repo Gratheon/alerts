@@ -3,6 +3,12 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import config from "./config";
 
+// WHY: config.prod.ts replaces the whole postgres section, so pool limits are read with env and default fallbacks here
+function positiveInt(value: unknown, fallback: number): number {
+  const parsed = Math.floor(Number(value));
+  return parsed >= 1 ? parsed : fallback;
+}
+
 export { sql };
 
 let db;
@@ -25,9 +31,10 @@ export async function initStorage(logger) {
   db = createConnectionPool({
     connectionString: dsn,
     bigIntMode: 'number',
-    poolSize: 10,
+    // The managed Postgres cluster is shared by all services and has ~22 usable slots
+    poolSize: positiveInt(config.postgres.poolSize ?? process.env.DB_POOL_SIZE, 2),
     maxUses: 7500,
-    idleTimeoutMilliseconds: 60000,
+    idleTimeoutMilliseconds: positiveInt(config.postgres.idleTimeoutMilliseconds ?? process.env.DB_IDLE_TIMEOUT_MS, 10000),
     queueTimeoutMilliseconds: 60000,
     onQueryError: (query, { text }, err) => {
       startTimes.delete(query);
