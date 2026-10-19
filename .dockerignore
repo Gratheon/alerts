@@ -6,9 +6,10 @@ node_modules
 coverage
 app
 
-# Local secrets and config overrides
+# Local config overrides
+# WHY: config.prod.ts is NOT ignored - it is gitignored and exists only on the prod host,
+# and the image must contain it, otherwise ENV_ID=prod falls back to config.default.ts (host "postgres")
 src/config/config.dev.ts
-src/config/config.prod.ts
 .env
 .env.*
 
