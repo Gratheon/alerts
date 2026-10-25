@@ -1,4 +1,3 @@
-import config from './config/index';
 import { alertModel } from './models/alerts';
 import error_code, { err } from './error_code';
 import { logger } from './logger';

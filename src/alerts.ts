@@ -8,7 +8,6 @@ import {buildSubgraphSchema} from '@apollo/federation';
 import {parse} from "graphql";
 import {registerFastifyTracing} from "@gratheon/log-lib";
 
-import config from './config/index';
 import {schema} from './schema';
 import {resolvers} from './resolvers';
 import {checkStorageHealth, initStorage} from "./storage";

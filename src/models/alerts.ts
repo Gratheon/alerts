@@ -1,4 +1,3 @@
-import sha1 from 'sha1';
 
 import { sql, storage } from "../storage";
 
